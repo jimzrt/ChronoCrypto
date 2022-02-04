@@ -10,7 +10,7 @@
 #endif
 
 
-extern "C" CHRONOCRYPTO_API void blowfish(uint32_t * keybuffer, char* blowfish_s_init, char* blowfish_p_init, char* blowfish_key);
+extern "C" CHRONOCRYPTO_API void blowfish_chrono(uint32_t * keybuffer, char* chrono_binary);
 
 extern "C" CHRONOCRYPTO_API void header_magic(char* header);
 

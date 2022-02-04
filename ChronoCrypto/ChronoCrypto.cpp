@@ -1,12 +1,11 @@
 #include "pch.h" // use stdafx.h in Visual Studio 2017 and earlier
 #include "ChronoCrypto.h"
 
-
-void encrypt(uint32_t* key_buffer, uint32_t* decrypted_1, uint32_t* decrypted_2)
+void encrypt(uint32_t* key_buffer, uint32_t* encrypted_1, uint32_t* encrypted_2)
 {
 	uint32_t tmp1 = 0;
-	uint32_t tmp2 = *decrypted_1;
-	uint32_t tmp3 = *decrypted_2;
+	uint32_t tmp2 = *encrypted_1;
+	uint32_t tmp3 = *encrypted_2;
 	for (int i = 0; i < 0x10; ++i)
 	{
 		tmp1 = tmp2 ^ key_buffer[i];
@@ -16,8 +15,8 @@ void encrypt(uint32_t* key_buffer, uint32_t* decrypted_1, uint32_t* decrypted_2)
 			tmp3;
 		tmp3 = tmp1;
 	}
-	*decrypted_1 = key_buffer[0x11] ^ tmp1;
-	*decrypted_2 = key_buffer[0x10] ^ tmp2;
+	*encrypted_1 = key_buffer[0x11] ^ tmp1;
+	*encrypted_2 = key_buffer[0x10] ^ tmp2;
 }
 
 void decrypt(uint32_t* key_buffer, uint32_t* decrypted_1, uint32_t* decrypted_2)
@@ -129,4 +128,11 @@ void blowfish(uint32_t* keybuffer, char* blowfish_s_init, char* blowfish_p_init,
 		currentKeybuffer += 2;
 	}
 
+}
+
+void blowfish_chrono(uint32_t* keybuffer, char* chrono_binary) {
+	char* blowfish_s_init = chrono_binary + 0x2d1268;
+	char* blowfish_p_init = blowfish_s_init + 0x1000;
+	char* blowfish_key = blowfish_s_init - 0x1740; // 0xba, 0xec, 0xb7, 0x8a, 0xea, 0x25, 0xca, 0xe4
+	blowfish(keybuffer, blowfish_s_init, blowfish_p_init, blowfish_key);
 }
